@@ -11,7 +11,7 @@
         }"
         @mouseover="shade(index)"
         @mouseleave="unshade()"
-        @click="$router.push(item.link)"
+        @click="route(item.link)"
       >
         <template v-if="item.appear && $route.path=='/'">
           <transition name="shade">
@@ -43,8 +43,12 @@ export default {
       let path = newVal.path;
       if (path != "/") {
         let i = this.blocks.findIndex(item => path == item.link);
+        if (document) document.querySelector("html").style.overflow = "auto";
+        if (window) window.scrollTo({ top: 200, behavior: "smooth" });
         this.enter(i);
       } else {
+        if (window) window.scrollTo({ top: 0, behavior: "smooth" });
+        if (document) document.querySelector("html").style.overflow = "hidden";
         this.appear();
       }
     }
@@ -60,12 +64,21 @@ export default {
     let path = this.$route.path;
     if (path != "/") {
       let i = this.blocks.findIndex(item => path == item.link);
+      if (window) window.scrollTo({ top: 200, behavior: "smooth" });
       this.enter(i);
     } else {
+      if (document) document.querySelector("html").style.overflow = "hidden";
       this.appear();
     }
   },
   methods: {
+    route(link) {
+      if (this.$route.path != link) {
+        this.$router.push(link);
+      } else {
+        this.$router.push("/");
+      }
+    },
     shade(index) {
       for (let i = 0; i < this.blocks.length; i++) {
         if (i != index) {

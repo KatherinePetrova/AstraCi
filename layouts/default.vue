@@ -2,7 +2,9 @@
   <div class="main" ref="main">
     <main-header/>
     <content-main/>
-    <nuxt class="page"/>
+    <transition name="shade">
+      <nuxt v-if="$route.path!='/'"/>
+    </transition>
     <main-footer/>
   </div>
 </template>
@@ -32,10 +34,5 @@ export default {
 
   min-height: 100%;
   width: 100%;
-}
-
-.main > .page {
-  position: relative;
-  margin-bottom: 2em;
 }
 </style>
